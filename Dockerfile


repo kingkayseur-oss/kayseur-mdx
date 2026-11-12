@@ -1,0 +1,21 @@
+FROM node:18-slim
+
+# Installation d'ffmpeg (requis pour les fonctions audio et vidéo du bot)
+RUN apt-get update && apt-get install -y ffmpeg && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Copie des configurations de dépendances
+COPY package.json ./
+
+# Installation des dépendances Node.js
+RUN npm install
+
+# Copie de l'ensemble du code source du bot
+COPY . .
+
+# Exposition du port Web (utilisé par le serveur de pairage du bot)
+EXPOSE 3000
+
+# Commande de démarrage définie dans le projet
+CMD ["npm", "start"]
